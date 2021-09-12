@@ -1,0 +1,22 @@
+version: '3.5'
+networks:
+  losst-network:
+services:
+  nginx:
+    image: nginx
+    ports:
+        - '8094:80'
+    volumes:
+        - ./www/:/var/www/
+        - ./conf/nginx:/etc/nginx/conf.d
+    networks:
+        - losst-network
+  php-fpm:
+    build: 
+      context: ./conf/php-fpm
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./www:/var/www/
+    networks:
+      - losst-network
